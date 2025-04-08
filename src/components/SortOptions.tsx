@@ -27,10 +27,10 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortBy, onSortChange }) => {
           <SelectValue placeholder="Seleccionar orden" />
         </SelectTrigger>
         <SelectContent className="bg-zinc-800 border-zinc-700 text-white">
-          <SelectItem value="price-asc" className="focus:bg-[#27AE60] focus:text-white">Precio: más bajo primero</SelectItem>
-          <SelectItem value="price-desc" className="focus:bg-[#27AE60] focus:text-white">Precio: más alto primero</SelectItem>
-          <SelectItem value="unit-price-asc" className="focus:bg-[#27AE60] focus:text-white">Precio por unidad: más bajo primero</SelectItem>
-          <SelectItem value="unit-price-desc" className="focus:bg-[#27AE60] focus:text-white">Precio por unidad: más alto primero</SelectItem>
+          <SelectItem value="price-asc" className="focus:bg-[#27AE60] focus:text-white">Precio más bajo primero</SelectItem>
+          <SelectItem value="price-desc" className="focus:bg-[#27AE60] focus:text-white">Precio más alto primero</SelectItem>
+          <SelectItem value="unit-price-asc" className="focus:bg-[#27AE60] focus:text-white">Precio por unidad más bajo primero</SelectItem>
+          <SelectItem value="unit-price-desc" className="focus:bg-[#27AE60] focus:text-white">Precio por unidad más alto primero</SelectItem>
         </SelectContent>
       </Select>
     </div>

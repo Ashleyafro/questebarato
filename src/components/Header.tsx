@@ -31,7 +31,10 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                 target.src = "https://via.placeholder.com/56x56/4CAF50/FFFFFF?text=QB";
               }}
             />
-            <h1 className="text-2xl font-bold text-white">QuesteBarato</h1>
+            <div>
+              <h1 className="text-2xl font-bold text-white">QuesteBarato</h1>
+              <p className="text-sm text-white/80">Compara precios entre supermercados</p>
+            </div>
           </div>
           
           <form onSubmit={handleSearch} className="flex w-full md:w-1/2 gap-2">
