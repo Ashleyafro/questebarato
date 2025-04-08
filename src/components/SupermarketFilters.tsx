@@ -16,9 +16,9 @@ const SupermarketFilters: React.FC<SupermarketFiltersProps> = ({
   onFilterChange 
 }) => {
   const supermarkets = [
-    { id: 'mercadona', name: 'Mercadona', color: 'supermarket-green' },
-    { id: 'dia', name: 'Dia', color: 'supermarket-red' },
-    { id: 'carrefour', name: 'Carrefour', color: 'supermarket-blue' }
+    { id: 'mercadona', name: 'Mercadona', color: 'bg-supermarket-green' },
+    { id: 'dia', name: 'Dia', color: 'bg-supermarket-red' },
+    { id: 'carrefour', name: 'Carrefour', color: 'bg-supermarket-blue' }
   ];
 
   const handleToggleSupermarket = (id: string) => {
@@ -30,19 +30,19 @@ const SupermarketFilters: React.FC<SupermarketFiltersProps> = ({
   };
 
   return (
-    <div className="mb-6">
+    <div>
       <div className="flex flex-wrap gap-3 items-center">
-        <h3 className="text-lg font-medium">Filtrar por supermercado:</h3>
+        <h3 className="text-lg font-medium text-white">Supermercados:</h3>
         
         <div className="md:hidden">
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button variant="outline" className="flex items-center gap-2 bg-zinc-800 border-none hover:bg-zinc-700 text-white">
                 <Filter size={16} />
                 <span>Filtrar</span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-64">
+            <PopoverContent className="w-64 bg-zinc-800 border-zinc-700">
               <div className="space-y-4">
                 {supermarkets.map(supermarket => (
                   <div key={supermarket.id} className="flex items-center space-x-2">
@@ -50,8 +50,9 @@ const SupermarketFilters: React.FC<SupermarketFiltersProps> = ({
                       id={`sm-mobile-${supermarket.id}`}
                       checked={selectedSupermarkets.includes(supermarket.id)}
                       onCheckedChange={() => handleToggleSupermarket(supermarket.id)}
+                      className="data-[state=checked]:bg-[#27AE60] data-[state=checked]:border-[#27AE60]"
                     />
-                    <Label htmlFor={`sm-mobile-${supermarket.id}`}>{supermarket.name}</Label>
+                    <Label htmlFor={`sm-mobile-${supermarket.id}`} className="text-white">{supermarket.name}</Label>
                   </div>
                 ))}
               </div>
@@ -64,7 +65,10 @@ const SupermarketFilters: React.FC<SupermarketFiltersProps> = ({
             <Button
               key={supermarket.id}
               variant={selectedSupermarkets.includes(supermarket.id) ? "default" : "outline"}
-              className={`flex items-center gap-2 ${selectedSupermarkets.includes(supermarket.id) ? `bg-${supermarket.color} hover:bg-${supermarket.color}/90` : ''}`}
+              className={selectedSupermarkets.includes(supermarket.id) 
+                ? `bg-[#27AE60] hover:bg-[#219653] text-white` 
+                : 'border-zinc-700 bg-zinc-800 text-white hover:bg-zinc-700'
+              }
               onClick={() => handleToggleSupermarket(supermarket.id)}
             >
               {selectedSupermarkets.includes(supermarket.id) && <Check size={16} />}

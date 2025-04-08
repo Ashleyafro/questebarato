@@ -39,34 +39,104 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#111]">
       <Header onSearch={handleSearch} />
       
-      <main className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6">Compara productos por mejor precio</h2>
-        
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-            <SupermarketFilters 
-              selectedSupermarkets={selectedSupermarkets}
-              onFilterChange={handleFilterChange}
-            />
-            
-            <SortOptions 
-              sortBy={sortBy}
-              onSortChange={handleSortChange}
-            />
+      <main className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-12 gap-6">
+          {/* Sidebar */}
+          <div className="col-span-12 md:col-span-3 lg:col-span-2">
+            <div className="bg-[#27AE60] rounded-lg p-4">
+              <div className="flex flex-col space-y-2">
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">1</span>
+                  Inicio
+                </a>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">2</span>
+                  Productos
+                </a>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">3</span>
+                  Precios
+                </a>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">4</span>
+                  Ayuda
+                </a>
+              </div>
+
+              <div className="mt-auto pt-8">
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <img 
+                    src="/lovable-uploads/a341dc36-8a68-40c4-9c8b-d7f5204044aa.png" 
+                    alt="QR Code" 
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <Separator className="my-6" />
-          
-          <ProductGrid products={products} loading={loading} />
+
+          {/* Main content */}
+          <div className="col-span-12 md:col-span-9 lg:col-span-10">
+            <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
+              <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>
+              
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                <SupermarketFilters 
+                  selectedSupermarkets={selectedSupermarkets}
+                  onFilterChange={handleFilterChange}
+                />
+                
+                <SortOptions 
+                  sortBy={sortBy}
+                  onSortChange={handleSortChange}
+                />
+              </div>
+              
+              <ProductGrid products={products} loading={loading} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#4A1D96] rounded-lg p-5">
+                <h3 className="text-lg font-bold text-white mb-3">TUS SUPERMERCADOS DISPONIBLES EN TU UBICACIÓN</h3>
+                <div className="text-white">
+                  <ul className="space-y-2">
+                    <li className="flex justify-between">
+                      <span>Mercadona</span>
+                      <span className="text-supermarket-green">Disponible</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Dia</span>
+                      <span className="text-supermarket-green">Disponible</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Carrefour</span>
+                      <span className="text-supermarket-green">Disponible</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-[#1E1E1E] rounded-lg p-5">
+                <h3 className="text-lg font-bold text-white mb-3">PRODUCTOS POPULARES</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {['🍎', '🥛', '🍞', '🧀', '🥩', '🍗', '🍌', '🥚'].map((emoji, index) => (
+                    <div key={index} className="h-12 w-12 bg-gray-800 rounded-full flex items-center justify-center text-2xl">
+                      {emoji}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
       
-      <footer className="bg-white py-6 border-t">
-        <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
-          <p>&copy; 2025 PrecioVersus - Comparador de precios de supermercados</p>
+      <footer className="bg-[#111] py-6 border-t border-gray-800">
+        <div className="container mx-auto px-4 text-center text-gray-400 text-sm">
+          <p>&copy; 2025 QuesteBarato - Comparador de precios de supermercados</p>
         </div>
       </footer>
     </div>

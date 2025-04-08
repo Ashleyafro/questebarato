@@ -17,27 +17,27 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   };
 
   return (
-    <header className="bg-white shadow-md py-4">
+    <header className="bg-[#27AE60] py-3">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
             <img 
-              src="/logo.png" 
-              alt="PrecioVersus Logo" 
-              className="h-12 w-auto"
+              src="/lovable-uploads/4bcbcdc7-6ee4-40b2-9916-8d7c5ed74b92.png" 
+              alt="QuesteBarato Logo" 
+              className="h-14 w-auto"
               onError={(e) => {
                 // Fallback if the image doesn't exist
                 const target = e.target as HTMLImageElement;
-                target.src = "https://via.placeholder.com/120x48/4CAF50/FFFFFF?text=PrecioVersus";
+                target.src = "https://via.placeholder.com/56x56/4CAF50/FFFFFF?text=QB";
               }}
             />
-            <h1 className="text-2xl font-bold text-supermarket-green">PrecioVersus</h1>
+            <h1 className="text-2xl font-bold text-white">QuesteBarato</h1>
           </div>
           
           <form onSubmit={handleSearch} className="flex w-full md:w-1/2 gap-2">
             <div className="relative flex-grow">
               <Input 
-                className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-supermarket-green"
+                className="w-full pl-10 pr-4 py-2 border-none rounded-full focus:outline-none focus:ring-2 focus:ring-white/50"
                 type="text"
                 placeholder="Buscar productos..."
                 value={searchTerm}
@@ -47,15 +47,15 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                 <Search size={18} />
               </div>
             </div>
-            <Button type="submit" className="bg-supermarket-green hover:bg-supermarket-lightGreen">
+            <Button type="submit" className="bg-[#111] hover:bg-[#333] rounded-full">
               Buscar
             </Button>
           </form>
           
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 bg-purple-700 hover:bg-purple-800 text-white border-none rounded-full">
               <ShoppingCart size={18} />
-              <span>Mi Lista</span>
+              <span>Iniciar</span>
             </Button>
           </div>
         </div>

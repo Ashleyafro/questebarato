@@ -17,20 +17,20 @@ interface SortOptionsProps {
 
 const SortOptions: React.FC<SortOptionsProps> = ({ sortBy, onSortChange }) => {
   return (
-    <div className="flex items-center gap-2 mb-6">
-      <span className="text-sm font-medium">Ordenar por:</span>
+    <div className="flex items-center gap-2">
+      <span className="text-sm font-medium text-white">Ordenar por:</span>
       <Select
         value={sortBy}
         onValueChange={(value) => onSortChange(value as SortOption)}
       >
-        <SelectTrigger className="w-[220px]">
+        <SelectTrigger className="w-[220px] bg-zinc-800 border-zinc-700 text-white focus:ring-[#27AE60]">
           <SelectValue placeholder="Seleccionar orden" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="price-asc">Precio: más bajo primero</SelectItem>
-          <SelectItem value="price-desc">Precio: más alto primero</SelectItem>
-          <SelectItem value="unit-price-asc">Precio por unidad: más bajo primero</SelectItem>
-          <SelectItem value="unit-price-desc">Precio por unidad: más alto primero</SelectItem>
+        <SelectContent className="bg-zinc-800 border-zinc-700 text-white">
+          <SelectItem value="price-asc" className="focus:bg-[#27AE60] focus:text-white">Precio: más bajo primero</SelectItem>
+          <SelectItem value="price-desc" className="focus:bg-[#27AE60] focus:text-white">Precio: más alto primero</SelectItem>
+          <SelectItem value="unit-price-asc" className="focus:bg-[#27AE60] focus:text-white">Precio por unidad: más bajo primero</SelectItem>
+          <SelectItem value="unit-price-desc" className="focus:bg-[#27AE60] focus:text-white">Precio por unidad: más alto primero</SelectItem>
         </SelectContent>
       </Select>
     </div>
