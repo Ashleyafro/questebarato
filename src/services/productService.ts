@@ -197,7 +197,8 @@ mockProducts.forEach(product => {
 export const getProducts = async (
   searchTerm = '',
   supermarkets: string[] = ['mercadona', 'dia', 'carrefour'],
-  sortBy = 'price-asc'
+  sortBy = 'price-asc',
+  categories: string[] = []
 ): Promise<Product[]> => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
@@ -217,6 +218,13 @@ export const getProducts = async (
   if (supermarkets.length > 0) {
     filteredProducts = filteredProducts.filter(p => 
       supermarkets.includes(p.supermarket.toLowerCase())
+    );
+  }
+  
+  // Filter by categories
+  if (categories.length > 0) {
+    filteredProducts = filteredProducts.filter(p => 
+      categories.includes(p.category)
     );
   }
   

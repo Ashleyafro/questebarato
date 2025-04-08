@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import SupermarketFilters from '@/components/SupermarketFilters';
+import CategoryFilter from '@/components/CategoryFilter';
 import SortOptions, { SortOption } from '@/components/SortOptions';
 import ProductGrid from '@/components/ProductGrid';
 import { getProducts } from '@/services/productService';
@@ -14,17 +15,27 @@ const Index = () => {
   const [sortBy, setSortBy] = useState<SortOption>('price-asc');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const loadProducts = async () => {
     setLoading(true);
-    const data = await getProducts(searchTerm, selectedSupermarkets, sortBy);
+    const data = await getProducts(searchTerm, selectedSupermarkets, sortBy, selectedCategories);
     setProducts(data);
+    
+    // Extract unique categories from products if we don't have them yet
+    if (availableCategories.length === 0) {
+      const categories = [...new Set(data.map(product => product.category))];
+      setAvailableCategories(categories);
+      setSelectedCategories(categories); // Initially select all categories
+    }
+    
     setLoading(false);
   };
 
   useEffect(() => {
     loadProducts();
-  }, [searchTerm, selectedSupermarkets, sortBy]);
+  }, [searchTerm, selectedSupermarkets, sortBy, selectedCategories]);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -32,6 +43,10 @@ const Index = () => {
 
   const handleFilterChange = (supermarkets: string[]) => {
     setSelectedSupermarkets(supermarkets);
+  };
+
+  const handleCategoryChange = (categories: string[]) => {
+    setSelectedCategories(categories);
   };
 
   const handleSortChange = (option: SortOption) => {
@@ -83,16 +98,26 @@ const Index = () => {
             <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
               <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>
               
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+              <div className="flex flex-col gap-4 mb-4">
                 <SupermarketFilters 
                   selectedSupermarkets={selectedSupermarkets}
                   onFilterChange={handleFilterChange}
                 />
                 
-                <SortOptions 
-                  sortBy={sortBy}
-                  onSortChange={handleSortChange}
-                />
+                {availableCategories.length > 0 && (
+                  <CategoryFilter
+                    selectedCategories={selectedCategories}
+                    availableCategories={availableCategories}
+                    onCategoryChange={handleCategoryChange}
+                  />
+                )}
+                
+                <div className="flex justify-end">
+                  <SortOptions 
+                    sortBy={sortBy}
+                    onSortChange={handleSortChange}
+                  />
+                </div>
               </div>
               
               <ProductGrid products={products} loading={loading} />
