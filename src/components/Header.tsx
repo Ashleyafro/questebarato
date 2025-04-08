@@ -24,15 +24,15 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             <img 
               src="/lovable-uploads/4bcbcdc7-6ee4-40b2-9916-8d7c5ed74b92.png" 
               alt="QuesteBarato Logo" 
-              className="h-14 w-auto"
+              className="h-20 w-auto" // Increased height from h-14 to h-20
               onError={(e) => {
                 // Fallback if the image doesn't exist
                 const target = e.target as HTMLImageElement;
-                target.src = "https://via.placeholder.com/56x56/4CAF50/FFFFFF?text=QB";
+                target.src = "https://via.placeholder.com/80x80/4CAF50/FFFFFF?text=QB";
               }}
             />
             <div>
-              <h1 className="text-2xl font-bold text-white">QuesteBarato</h1>
+              <h1 className="text-3xl font-bold text-white">Queste<span className="text-black">Barato</span></h1>
               <p className="text-sm text-white/80">Compara precios entre supermercados</p>
             </div>
           </div>
