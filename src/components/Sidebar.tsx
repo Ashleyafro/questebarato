@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Bell, ShoppingCart, QrCode, User, Menu } from 'lucide-react';
@@ -21,20 +20,15 @@ const Sidebar = () => {
     <ShadcnSidebar className="bg-[#27AE60] border-r-0">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
-          <div 
-            className="bg-[#22d87d] rounded-lg p-2 flex items-center justify-center"
-            style={{ width: '80px', height: '80px' }}
-          >
-            <img 
-              src="/lovable-uploads/f22c54a3-dcd7-4299-93ba-4aa9058980f6.png" 
-              alt="QuesteBarato Logo" 
-              className="h-16 w-16 object-contain"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://via.placeholder.com/64x64/22d87d/FFFFFF?text=QB";
-              }}
-            />
-          </div>
+          <img 
+            src="/lovable-uploads/f22c54a3-dcd7-4299-93ba-4aa9058980f6.png" 
+            alt="QuesteBarato Logo" 
+            className="h-16 w-16 object-contain"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "https://via.placeholder.com/64x64/22d87d/FFFFFF?text=QB";
+            }}
+          />
           {!isMobile && (
             <div>
               <h1 className="text-xl font-bold text-white">
