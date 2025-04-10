@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,7 +63,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				supermarket: {
-					green: '#4CAF50',
+					green: '#4CAF50', // Updated to match the logo's green
 					lightGreen: '#8BC34A',
 					blue: '#2196F3',
 					orange: '#FF9800',

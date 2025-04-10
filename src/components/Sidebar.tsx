@@ -17,7 +17,7 @@ const Sidebar = () => {
   const isMobile = useIsMobile();
 
   return (
-    <ShadcnSidebar className="bg-[#27AE60] border-r-0">
+    <ShadcnSidebar className="bg-[#4CAF50] border-r-0">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
           <img 
