@@ -22,7 +22,7 @@ const Sidebar = () => {
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
           <img 
-            src="/lovable-uploads/f22c54a3-dcd7-4299-93ba-4aa9058980f6.png" 
+            src="/lovable-uploads/1C338D0B-46D5-4E1A-B6A3-9DF8707621EB.jpeg"" 
             alt="QuesteBarato Logo" 
             className="h-16 w-16 object-contain"
             onError={(e) => {
