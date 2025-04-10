@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         <form onSubmit={handleSearch} className="flex w-full gap-2">
           <div className="relative flex-grow">
             <Input 
-              className="w-full pl-10 pr-4 py-2 bg-zinc-700 border-zinc-600 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-[#27AE60]"
+              className="w-full pl-10 pr-4 py-2 bg-zinc-700 border-zinc-600 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-[#4CAF50]"
               type="text"
               placeholder="Buscar productos..."
               value={searchTerm}
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
               <Search size={18} />
             </div>
           </div>
-          <Button type="submit" className="bg-[#27AE60] hover:bg-[#219653] text-white rounded-full">
+          <Button type="submit" className="bg-[#4CAF50] hover:bg-[#8BC34A] text-white rounded-full">
             Buscar
           </Button>
         </form>

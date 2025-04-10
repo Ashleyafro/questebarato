@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,7 +35,7 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 122 39% 49%;
+    --sidebar-background: 122 39% 31%; /* Updated to match #4CAF50 */
     --sidebar-foreground: 0 0% 98%;
 
     --sidebar-primary: 240 5.9% 10%;
@@ -48,7 +49,7 @@
   }
 
   .dark {
-    --background: 122 39% 39%;
+    --background: 122 39% 31%; /* Updated to match #4CAF50 */
     --foreground: 0 0% 98%;
 
     --card: 222.2 84% 4.9%;

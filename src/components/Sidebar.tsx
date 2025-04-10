@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Bell, ShoppingCart, QrCode, User, Menu } from 'lucide-react';
@@ -26,7 +27,7 @@ const Sidebar = () => {
             className="h-16 w-16 object-contain"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "https://via.placeholder.com/64x64/22d87d/FFFFFF?text=QB";
+              target.src = "https://via.placeholder.com/64x64/4CAF50/FFFFFF?text=QB";
             }}
           />
           {!isMobile && (
@@ -42,7 +43,7 @@ const Sidebar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Inicio">
-              <Link to="/" className="text-white hover:bg-[#219653] hover:text-white">
+              <Link to="/" className="text-white hover:bg-[#8BC34A] hover:text-white">
                 <Home size={20} />
                 <span>Inicio</span>
               </Link>
@@ -50,7 +51,7 @@ const Sidebar = () => {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Alertas">
-              <Link to="/alertas" className="text-white hover:bg-[#219653] hover:text-white">
+              <Link to="/alertas" className="text-white hover:bg-[#8BC34A] hover:text-white">
                 <Bell size={20} />
                 <span>Alertas</span>
               </Link>
@@ -58,7 +59,7 @@ const Sidebar = () => {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Lista de compra">
-              <Link to="/lista" className="text-white hover:bg-[#219653] hover:text-white">
+              <Link to="/lista" className="text-white hover:bg-[#8BC34A] hover:text-white">
                 <ShoppingCart size={20} />
                 <span>Lista de compra</span>
               </Link>
@@ -66,7 +67,7 @@ const Sidebar = () => {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Escanear QR">
-              <Link to="/qr" className="text-white hover:bg-[#219653] hover:text-white">
+              <Link to="/qr" className="text-white hover:bg-[#8BC34A] hover:text-white">
                 <QrCode size={20} />
                 <span>Escanear QR</span>
               </Link>
@@ -76,7 +77,7 @@ const Sidebar = () => {
       </SidebarContent>
       <SidebarFooter className="mt-auto p-4">
         <SidebarMenuButton asChild tooltip="Mi cuenta">
-          <Link to="/cuenta" className="text-white hover:bg-[#219653] hover:text-white">
+          <Link to="/cuenta" className="text-white hover:bg-[#8BC34A] hover:text-white">
             <User size={20} />
             <span>Mi cuenta</span>
           </Link>

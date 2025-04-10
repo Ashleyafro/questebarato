@@ -61,22 +61,22 @@ const Index = () => {
         <div className="grid grid-cols-12 gap-6">
           {/* Sidebar */}
           <div className="col-span-12 md:col-span-3 lg:col-span-2">
-            <div className="bg-[#27AE60] rounded-lg p-4">
+            <div className="bg-[#4CAF50] rounded-lg p-4">
               <div className="flex flex-col space-y-2">
-                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
-                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">1</span>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8BC34A] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#4CAF50] text-xs">1</span>
                   Inicio
                 </a>
-                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
-                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">2</span>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8BC34A] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#4CAF50] text-xs">2</span>
                   Productos
                 </a>
-                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
-                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">3</span>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8BC34A] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#4CAF50] text-xs">3</span>
                   Precios
                 </a>
-                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#219653] flex items-center gap-2">
-                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#27AE60] text-xs">4</span>
+                <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8BC34A] flex items-center gap-2">
+                  <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#4CAF50] text-xs">4</span>
                   Ayuda
                 </a>
               </div>
