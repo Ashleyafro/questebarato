@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Bell, ShoppingCart, QrCode, User, Menu } from 'lucide-react';
@@ -25,7 +26,7 @@ const Sidebar = () => {
             style={{ width: '80px', height: '80px' }}
           >
             <img 
-              src="/lovable-uploads/4bcbcdc7-6ee4-40b2-9916-8d7c5ed74b92.png" 
+              src="/lovable-uploads/f22c54a3-dcd7-4299-93ba-4aa9058980f6.png" 
               alt="QuesteBarato Logo" 
               className="h-16 w-16 object-contain"
               onError={(e) => {
