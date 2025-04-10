@@ -1,11 +1,10 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 122 39% 49%;
+    --background: 151 98% 41%; /* Converted #00D37A to HSL */
     --foreground: 0 0% 98%;
 
     --card: 0 0% 100%;
@@ -35,21 +34,12 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 122 39% 31%; /* Updated to match #4CAF50 */
-    --sidebar-foreground: 0 0% 98%;
-
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 151 98% 41%; /* Updated to match #00D37A */
+    --sidebar-primary: 151 98% 41%; /* New primary color */
   }
 
   .dark {
-    --background: 122 39% 31%; /* Updated to match #4CAF50 */
+    --background: 151 98% 31%; /* Darker variation for dark mode */
     --foreground: 0 0% 98%;
 
     --card: 222.2 84% 4.9%;
@@ -76,14 +66,8 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 151 98% 31%;
+    --sidebar-primary: 151 98% 31%;
   }
 }
 

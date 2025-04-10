@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import SupermarketFilters from '@/components/SupermarketFilters';
@@ -23,11 +22,10 @@ const Index = () => {
     const data = await getProducts(searchTerm, selectedSupermarkets, sortBy, selectedCategories);
     setProducts(data);
     
-    // Extract unique categories from products if we don't have them yet
     if (availableCategories.length === 0) {
       const categories = [...new Set(data.map(product => product.category))];
       setAvailableCategories(categories);
-      setSelectedCategories(categories); // Initially select all categories
+      setSelectedCategories(categories);
     }
     
     setLoading(false);
@@ -59,9 +57,8 @@ const Index = () => {
       
       <main className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-12 gap-6">
-          {/* Sidebar */}
           <div className="col-span-12 md:col-span-3 lg:col-span-2">
-            <div className="bg-[#4CAF50] rounded-lg p-4">
+            <div className="bg-[#00D37A] rounded-lg p-4">
               <div className="flex flex-col space-y-2">
                 <a href="#" className="text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8BC34A] flex items-center gap-2">
                   <span className="w-4 h-4 bg-white rounded-full flex items-center justify-center text-[#4CAF50] text-xs">1</span>
@@ -93,7 +90,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Main content */}
           <div className="col-span-12 md:col-span-9 lg:col-span-10">
             <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
               <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>

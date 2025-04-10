@@ -18,7 +18,7 @@ const Sidebar = () => {
   const isMobile = useIsMobile();
 
   return (
-    <ShadcnSidebar className="bg-[#4CAF50] border-r-0">
+    <ShadcnSidebar className="bg-[#00D37A] border-r-0">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
           <img 
@@ -27,7 +27,7 @@ const Sidebar = () => {
             className="h-16 w-16 object-contain"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "https://via.placeholder.com/64x64/4CAF50/FFFFFF?text=QB";
+              target.src = "https://via.placeholder.com/64x64/00D37A/FFFFFF?text=QB";
             }}
           />
           {!isMobile && (
@@ -43,7 +43,7 @@ const Sidebar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Inicio">
-              <Link to="/" className="text-white hover:bg-[#8BC34A] hover:text-white">
+              <Link to="/" className="text-white hover:bg-[#33E29B] hover:text-white">
                 <Home size={20} />
                 <span>Inicio</span>
               </Link>
@@ -77,7 +77,7 @@ const Sidebar = () => {
       </SidebarContent>
       <SidebarFooter className="mt-auto p-4">
         <SidebarMenuButton asChild tooltip="Mi cuenta">
-          <Link to="/cuenta" className="text-white hover:bg-[#8BC34A] hover:text-white">
+          <Link to="/cuenta" className="text-white hover:bg-[#33E29B] hover:text-white">
             <User size={20} />
             <span>Mi cuenta</span>
           </Link>
