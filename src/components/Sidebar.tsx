@@ -18,11 +18,11 @@ const Sidebar = () => {
   const isMobile = useIsMobile();
 
   return (
-    <ShadcnSidebar className="bg-[#19E58D] border-r-0">
+    <ShadcnSidebar className="bg-[#00D37A] border-r-0">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
           <img 
-            src="/lovable-uploads/1C338D0B-46D5-4E1A-B6A3-9DF8707621EB.jpeg"" 
+            src="/lovable-uploads/b7322861-20d0-467b-8400-448cc488269c.png" 
             alt="QuesteBarato Logo" 
             className="h-16 w-16 object-contain"
             onError={(e) => {
