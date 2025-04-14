@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Star } from 'lucide-react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -51,24 +50,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Card className="h-full flex flex-col transition-shadow hover:shadow-md">
-      <div className="relative">
-        <img 
-          src={product.image || `https://via.placeholder.com/300x200?text=${encodeURIComponent(product.name)}`} 
-          alt={product.name}
-          className="w-full h-48 object-contain p-4"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "https://via.placeholder.com/300x200?text=Sin+Imagen";
-          }}
-        />
+      <div className="relative h-48 flex items-center justify-center bg-gray-100">
+        <div className="text-6xl">
+          {getCategoryEmoji(product.category)}
+        </div>
         <Badge 
           className={`absolute top-2 right-2 ${getSupermarketColor(product.supermarket)}`}
         >
           {product.supermarket}
         </Badge>
-        <div className="absolute top-2 left-2 w-8 h-8 bg-white rounded-full flex items-center justify-center text-xl shadow-sm">
-          {getCategoryEmoji(product.category)}
-        </div>
       </div>
       <CardContent className="flex-grow pt-4">
         <h3 className="font-medium text-lg mb-2 line-clamp-2">{product.name}</h3>

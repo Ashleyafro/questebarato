@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Product } from '@/types/product';
 import { Badge } from "@/components/ui/badge";
@@ -28,9 +27,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
     );
   }
 
-  // Group products by name (creating a dictionary of product names)
   const groupByProductName = products.reduce((acc, product) => {
-    // Use the name without supermarket as key
     const productNameKey = product.name;
     
     if (!acc[productNameKey]) {
@@ -40,10 +37,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
     return acc;
   }, {} as Record<string, Product[]>);
 
-  // Sort the products to ensure consistent supermarket order
   Object.keys(groupByProductName).forEach(productName => {
     groupByProductName[productName].sort((a, b) => {
-      // Sort by supermarket in a specific order: Mercadona, Dia, Carrefour
       const order = { 'Mercadona': 1, 'Dia': 2, 'Carrefour': 3 };
       return order[a.supermarket as keyof typeof order] - order[b.supermarket as keyof typeof order];
     });
@@ -62,21 +57,38 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
     }
   };
 
+  const getCategoryEmoji = (category: string) => {
+    const categoryMap: Record<string, string> = {
+      'lácteos': '🥛',
+      'bebidas': '🥤',
+      'despensa': '🍚',
+      'carnes': '🥩',
+      'pescados': '🐟',
+      'frutas': '🍎',
+      'verduras': '🥦',
+      'congelados': '❄️',
+      'limpieza': '🧼',
+      'higiene': '🧴',
+      'mascotas': '🐾',
+      'panadería': '🍞',
+      'dulces': '🍫',
+      'embutidos': '🥓',
+      'snacks': '🍿',
+      'bebés': '👶',
+      'vinos': '🍷',
+      'cervezas': '🍺'
+    };
+    
+    return categoryMap[category.toLowerCase()] || '🛒';
+  };
+
   return (
     <div className="space-y-6">
       {Object.entries(groupByProductName).map(([productName, products]) => (
         <div key={productName} className="bg-black rounded-lg p-4">
           <div className="flex items-center mb-4">
-            <div className="h-12 w-12 rounded-full bg-gray-700 flex-shrink-0 overflow-hidden">
-              <img 
-                src={products[0]?.image || `https://via.placeholder.com/40?text=${encodeURIComponent(productName)}`} 
-                alt={productName}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "https://via.placeholder.com/40?text=Img";
-                }}
-              />
+            <div className="h-12 w-12 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
+              {getCategoryEmoji(products[0]?.category)}
             </div>
             <div className="ml-3">
               <h2 className="text-white font-bold text-lg">{productName}</h2>
