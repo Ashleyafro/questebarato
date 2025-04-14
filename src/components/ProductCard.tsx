@@ -24,6 +24,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
+  const getCategoryEmoji = (category: string) => {
+    const categoryMap: Record<string, string> = {
+      'lácteos': '🥛',
+      'bebidas': '🥤',
+      'despensa': '🍚',
+      'carnes': '🥩',
+      'pescados': '🐟',
+      'frutas': '🍎',
+      'verduras': '🥦',
+      'congelados': '❄️',
+      'limpieza': '🧼',
+      'higiene': '🧴',
+      'mascotas': '🐾',
+      'panadería': '🍞',
+      'dulces': '🍫',
+      'embutidos': '🥓',
+      'snacks': '🍿',
+      'bebés': '👶',
+      'vinos': '🍷',
+      'cervezas': '🍺'
+    };
+    
+    return categoryMap[category.toLowerCase()] || '🛒';
+  };
+
   return (
     <Card className="h-full flex flex-col transition-shadow hover:shadow-md">
       <div className="relative">
@@ -41,6 +66,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           {product.supermarket}
         </Badge>
+        <div className="absolute top-2 left-2 w-8 h-8 bg-white rounded-full flex items-center justify-center text-xl shadow-sm">
+          {getCategoryEmoji(product.category)}
+        </div>
       </div>
       <CardContent className="flex-grow pt-4">
         <h3 className="font-medium text-lg mb-2 line-clamp-2">{product.name}</h3>
