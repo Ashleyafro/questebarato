@@ -24,6 +24,42 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          brand: string
+          category: string
+          created_at: string
+          id: string
+          name: string
+          price: number
+          reference_price: number
+          reference_unit: string
+          supermarket: string
+        }
+        Insert: {
+          brand: string
+          category: string
+          created_at?: string
+          id?: string
+          name: string
+          price: number
+          reference_price: number
+          reference_unit: string
+          supermarket: string
+        }
+        Update: {
+          brand?: string
+          category?: string
+          created_at?: string
+          id?: string
+          name?: string
+          price?: number
+          reference_price?: number
+          reference_unit?: string
+          supermarket?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

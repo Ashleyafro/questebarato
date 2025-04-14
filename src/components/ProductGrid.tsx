@@ -69,7 +69,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
           <div className="flex items-center mb-4">
             <div className="h-12 w-12 rounded-full bg-gray-700 flex-shrink-0 overflow-hidden">
               <img 
-                src={products[0]?.image} 
+                src={products[0]?.image || `https://via.placeholder.com/40?text=${encodeURIComponent(productName)}`} 
                 alt={productName}
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -80,7 +80,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
             </div>
             <div className="ml-3">
               <h2 className="text-white font-bold text-lg">{productName}</h2>
-              <p className="text-sm text-gray-400">{products[0]?.quantity}</p>
+              <p className="text-sm text-gray-400">{products[0]?.quantity || products[0]?.reference_unit}</p>
             </div>
           </div>
           
@@ -109,15 +109,15 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
                           {productInSupermarket.price.toFixed(2)} €
                         </p>
                         <p className="text-xs text-gray-400">
-                          ({productInSupermarket.unitPrice.toFixed(2)} €/{productInSupermarket.unitType})
+                          ({productInSupermarket.reference_price.toFixed(2)} €/{productInSupermarket.reference_unit.replace('€/', '')})
                         </p>
                       </div>
                       <div className="flex items-center">
                         <div className="text-sm text-gray-400">
-                          {Array(Math.floor(productInSupermarket.rating)).fill(0).map((_, i) => (
+                          {Array(Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
                             <span key={i} className="text-yellow-400">★</span>
                           ))}
-                          {Array(5 - Math.floor(productInSupermarket.rating)).fill(0).map((_, i) => (
+                          {Array(5 - Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
                             <span key={i}>☆</span>
                           ))}
                         </div>

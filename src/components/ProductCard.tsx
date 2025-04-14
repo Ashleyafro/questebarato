@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <Card className="h-full flex flex-col transition-shadow hover:shadow-md">
       <div className="relative">
         <img 
-          src={product.image} 
+          src={product.image || `https://via.placeholder.com/300x200?text=${encodeURIComponent(product.name)}`} 
           alt={product.name}
           className="w-full h-48 object-contain p-4"
           onError={(e) => {
@@ -44,22 +44,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
       <CardContent className="flex-grow pt-4">
         <h3 className="font-medium text-lg mb-2 line-clamp-2">{product.name}</h3>
-        <div className="text-sm text-gray-500 mb-2">{product.quantity}</div>
+        <div className="text-sm text-gray-500 mb-2">{product.brand}</div>
+        <div className="text-sm text-gray-500 mb-2">{product.quantity || product.reference_unit}</div>
         <div className="flex items-center mb-2">
           {Array(5).fill(0).map((_, i) => (
             <Star 
               key={i} 
               size={16} 
-              className={i < product.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"} 
+              className={(i < (product.rating || 0)) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"} 
             />
           ))}
-          <span className="ml-1 text-sm text-gray-600">({product.reviews})</span>
+          <span className="ml-1 text-sm text-gray-600">({product.reviews || 0})</span>
         </div>
         <div className="flex items-end justify-between mt-2">
           <div>
             <div className="text-2xl font-bold">{product.price.toFixed(2)} €</div>
             <div className="text-sm text-gray-600">
-              ({product.unitPrice.toFixed(2)} €/{product.unitType})
+              ({product.reference_price.toFixed(2)} €/{product.reference_unit.replace('€/', '')})
             </div>
           </div>
           {product.discount && (

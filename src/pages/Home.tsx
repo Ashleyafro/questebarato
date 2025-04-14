@@ -1,90 +1,144 @@
 
-import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import SupermarketFilters from '@/components/SupermarketFilters';
+import CategoryFilter from '@/components/CategoryFilter';
+import SortOptions, { SortOption } from '@/components/SortOptions';
+import ProductGrid from '@/components/ProductGrid';
+import { getProducts, getCategories } from '@/services/productService';
+import { Product } from '@/types/product';
+import { useToast } from '@/hooks/use-toast';
 
 const Home = () => {
-  return (
-    <div className="space-y-6">
-      <section>
-        <h2 className="text-2xl font-bold text-white mb-4">Hola! Ahorra en tu compra</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="bg-zinc-800 rounded-xl p-4">
-            <h3 className="text-lg font-medium text-white mb-2">Búsquedas recientes</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <span>Leche</span>
-                <ChevronRight size={16} />
-              </li>
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <span>Arroz</span>
-                <ChevronRight size={16} />
-              </li>
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <span>Pan de molde</span>
-                <ChevronRight size={16} />
-              </li>
-            </ul>
-          </div>
-          
-          <div className="bg-zinc-800 rounded-xl p-4">
-            <h3 className="text-lg font-medium text-white mb-2">Favoritos</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <span>Yogur natural</span>
-                <span className="text-sm text-green-500">1,19€</span>
-              </li>
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <span>Pasta</span>
-                <span className="text-sm text-green-500">0,89€</span>
-              </li>
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <span>Aceite de oliva</span>
-                <span className="text-sm text-green-500">4,15€</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="bg-zinc-800 rounded-xl p-4">
-            <h3 className="text-lg font-medium text-white mb-2">Ofertas destacadas</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <div>
-                  <span>Café</span>
-                  <p className="text-xs text-gray-400">Mercadona</p>
-                </div>
-                <div className="text-right">
-                  <span className="text-sm text-green-500">2,45€</span>
-                  <p className="text-xs text-red-400 line-through">3,20€</p>
-                </div>
-              </li>
-              <li className="flex items-center justify-between text-gray-300 p-2 hover:bg-zinc-700 rounded">
-                <div>
-                  <span>Pollo</span>
-                  <p className="text-xs text-gray-400">Carrefour</p>
-                </div>
-                <div className="text-right">
-                  <span className="text-sm text-green-500">3,99€</span>
-                  <p className="text-xs text-red-400 line-through">5,50€</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSupermarkets, setSelectedSupermarkets] = useState<string[]>(['mercadona', 'dia', 'carrefour']);
+  const [sortBy, setSortBy] = useState<SortOption>('price-asc');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const { toast } = useToast();
+
+  const loadCategories = async () => {
+    try {
+      const categories = await getCategories();
+      setAvailableCategories(categories);
       
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-white">Categorías</h2>
-          <button className="text-sm text-[#27AE60]">Ver todas</button>
+      if (categories.length > 0) {
+        setSelectedCategories(categories);
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar las categorías.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const loadProducts = async () => {
+    setLoading(true);
+    try {
+      const data = await getProducts(searchTerm, selectedSupermarkets, sortBy, selectedCategories);
+      setProducts(data);
+    } catch (error) {
+      console.error('Error loading products:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los productos.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  useEffect(() => {
+    loadProducts();
+  }, [searchTerm, selectedSupermarkets, sortBy, selectedCategories]);
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+  };
+
+  const handleFilterChange = (supermarkets: string[]) => {
+    setSelectedSupermarkets(supermarkets);
+  };
+
+  const handleCategoryChange = (categories: string[]) => {
+    setSelectedCategories(categories);
+  };
+
+  const handleSortChange = (option: SortOption) => {
+    setSortBy(option);
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
+        <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>
+        
+        <div className="flex flex-col gap-4 mb-4">
+          <SupermarketFilters 
+            selectedSupermarkets={selectedSupermarkets}
+            onFilterChange={handleFilterChange}
+          />
+          
+          {availableCategories.length > 0 && (
+            <CategoryFilter
+              selectedCategories={selectedCategories}
+              availableCategories={availableCategories}
+              onCategoryChange={handleCategoryChange}
+            />
+          )}
+          
+          <div className="flex justify-end">
+            <SortOptions 
+              sortBy={sortBy}
+              onSortChange={handleSortChange}
+            />
+          </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {['Lácteos', 'Carnicería', 'Panadería', 'Frutas', 'Bebidas', 'Limpieza'].map((category) => (
-            <div key={category} className="bg-zinc-800 rounded-xl p-4 text-center hover:bg-zinc-700 cursor-pointer">
-              <span className="text-white">{category}</span>
-            </div>
-          ))}
+        
+        <ProductGrid products={products} loading={loading} />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-[#4A1D96] rounded-lg p-5">
+          <h3 className="text-lg font-bold text-white mb-3">TUS SUPERMERCADOS DISPONIBLES EN TU UBICACIÓN</h3>
+          <div className="text-white">
+            <ul className="space-y-2">
+              <li className="flex justify-between">
+                <span>Mercadona</span>
+                <span className="text-supermarket-green">Disponible</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Dia</span>
+                <span className="text-supermarket-green">Disponible</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Carrefour</span>
+                <span className="text-supermarket-green">Disponible</span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </section>
+
+        <div className="bg-[#1E1E1E] rounded-lg p-5">
+          <h3 className="text-lg font-bold text-white mb-3">PRODUCTOS POPULARES</h3>
+          <div className="grid grid-cols-4 gap-4">
+            {['🍎', '🥛', '🍞', '🧀', '🥩', '🍗', '🍌', '🥚'].map((emoji, index) => (
+              <div key={index} className="h-12 w-12 bg-gray-800 rounded-full flex items-center justify-center text-2xl">
+                {emoji}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
