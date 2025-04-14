@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SupermarketFilters from '@/components/SupermarketFilters';
 import CategoryFilter from '@/components/CategoryFilter';
 import SortOptions, { SortOption } from '@/components/SortOptions';
@@ -9,7 +10,9 @@ import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
 
 const Home = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialSearchTerm = searchParams.get('q') || '';
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [selectedSupermarkets, setSelectedSupermarkets] = useState<string[]>(['mercadona', 'dia', 'carrefour']);
   const [sortBy, setSortBy] = useState<SortOption>('price-asc');
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,6 +20,11 @@ const Home = () => {
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const { toast } = useToast();
+
+  // Update search term when URL parameter changes
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
 
   const loadCategories = async () => {
     try {

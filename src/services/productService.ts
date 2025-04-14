@@ -50,9 +50,10 @@ export const getProducts = async (
       .from('products')
       .select('*');
 
-    // Filter by search term
-    if (searchTerm) {
-      query = query.or(`name.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%`);
+    // Filter by search term - improved search logic
+    if (searchTerm && searchTerm.trim() !== '') {
+      // Use ilike for case-insensitive search on name and category
+      query = query.or(`name.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%,brand.ilike.%${searchTerm}%`);
     }
     
     // Filter by supermarkets

@@ -1,19 +1,30 @@
-
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface HeaderProps {
-  onSearch: (term: string) => void;
+  onSearch?: (term: string) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialSearchTerm = searchParams.get('q') || '';
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(searchTerm);
+    console.info('Searching for:', searchTerm);
+    
+    if (onSearch) {
+      // If direct callback is provided, use it
+      onSearch(searchTerm);
+    } else {
+      // Otherwise navigate to home with search query
+      navigate(`/?q=${encodeURIComponent(searchTerm)}`);
+    }
   };
 
   return (
