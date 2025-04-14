@@ -10,6 +10,9 @@ import Alerts from "./pages/Alerts";
 import ShoppingList from "./pages/ShoppingList";
 import QrScanner from "./pages/QrScanner";
 import UserAccount from "./pages/UserAccount";
+import RecentSearches from "./pages/RecentSearches";
+import Favorites from "./pages/Favorites";
+import FeaturedOffers from "./pages/FeaturedOffers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +30,9 @@ const App = () => (
             <Route path="lista" element={<ShoppingList />} />
             <Route path="qr" element={<QrScanner />} />
             <Route path="cuenta" element={<UserAccount />} />
+            <Route path="recientes" element={<RecentSearches />} />
+            <Route path="favoritos" element={<Favorites />} />
+            <Route path="ofertas" element={<FeaturedOffers />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

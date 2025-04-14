@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Bell, ShoppingCart, QrCode, User, Menu } from 'lucide-react';
+import { Home, Bell, ShoppingCart, QrCode, User, Menu, Search, Heart, Star } from 'lucide-react';
 import { 
   Sidebar as ShadcnSidebar, 
   SidebarContent, 
@@ -9,7 +9,8 @@ import {
   SidebarMenuItem, 
   SidebarMenuButton,
   SidebarHeader,
-  SidebarFooter
+  SidebarFooter,
+  SidebarSeparator
 } from "@/components/ui/sidebar";
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -74,6 +75,37 @@ const Sidebar = () => {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+        
+        {/* New "Para ti" section */}
+        <div className="mt-4">
+          <h2 className="px-3 text-sm font-semibold text-white/80 mb-2">Para ti</h2>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Búsquedas recientes">
+                <Link to="/recientes" className="text-white hover:bg-[#33E29B] hover:text-white">
+                  <Search size={20} />
+                  <span>Búsquedas recientes</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Favoritos">
+                <Link to="/favoritos" className="text-white hover:bg-[#33E29B] hover:text-white">
+                  <Heart size={20} />
+                  <span>Favoritos</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Ofertas destacadas">
+                <Link to="/ofertas" className="text-white hover:bg-[#33E29B] hover:text-white">
+                  <Star size={20} />
+                  <span>Ofertas destacadas</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </div>
       </SidebarContent>
       <SidebarFooter className="mt-auto p-4">
         <SidebarMenuButton asChild tooltip="Mi cuenta">
