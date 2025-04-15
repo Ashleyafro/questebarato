@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -19,10 +20,8 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     console.info('Searching for:', searchTerm);
     
     if (onSearch) {
-      // If direct callback is provided, use it
       onSearch(searchTerm);
     } else {
-      // Otherwise navigate to home with search query
       navigate(`/?q=${encodeURIComponent(searchTerm)}`);
     }
   };

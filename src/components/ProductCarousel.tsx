@@ -32,23 +32,20 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title }) =>
   };
   
   const toggleFavorite = (e: React.MouseEvent, productId: string) => {
-    e.stopPropagation(); // Prevent card click
+    e.stopPropagation();
     
     const favorites = getFavorites();
     
     if (isFavorite(productId)) {
-      // Remove from favorites
       const updatedFavorites = favorites.filter((id: string) => id !== productId);
       localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
       toast.success('Producto eliminado de favoritos');
     } else {
-      // Add to favorites
       favorites.push(productId);
       localStorage.setItem('favorites', JSON.stringify(favorites));
       toast.success('Producto añadido a favoritos');
     }
     
-    // Force a re-render
     const forceUpdate = useState({})[1];
     forceUpdate({});
   };
