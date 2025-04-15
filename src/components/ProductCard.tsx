@@ -1,15 +1,27 @@
-import React from 'react';
-import { Star } from 'lucide-react';
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Star, Heart } from 'lucide-react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from '@/types/product';
+import { toast } from 'sonner';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
+  
+  useEffect(() => {
+    // Check if this product is in favorites
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    setIsFavorite(favorites.includes(product.id));
+  }, [product.id]);
+  
   const getSupermarketColor = (supermarket: string) => {
     switch (supermarket.toLowerCase()) {
       case 'mercadona':
@@ -47,9 +59,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     
     return categoryMap[category.toLowerCase()] || '🛒';
   };
+  
+  const toggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigating to detail
+    
+    // Get current favorites from local storage
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    
+    if (isFavorite) {
+      // Remove from favorites
+      const updatedFavorites = favorites.filter((id: string) => id !== product.id);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      setIsFavorite(false);
+      toast.success('Producto eliminado de favoritos');
+    } else {
+      // Add to favorites
+      favorites.push(product.id);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      setIsFavorite(true);
+      toast.success('Producto añadido a favoritos');
+    }
+  };
 
   return (
-    <Card className="h-full flex flex-col transition-shadow hover:shadow-md">
+    <Card 
+      className="h-full flex flex-col transition-shadow hover:shadow-md cursor-pointer"
+      onClick={() => navigate(`/producto/${product.id}`)}
+    >
       <div className="relative h-48 flex items-center justify-center bg-gray-100">
         <div className="text-6xl">
           {getCategoryEmoji(product.category)}
@@ -59,6 +95,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           {product.supermarket}
         </Badge>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className={`absolute top-2 left-2 h-8 w-8 p-0 ${isFavorite ? 'text-red-500' : 'text-gray-400'}`}
+          onClick={toggleFavorite}
+        >
+          <Heart className={isFavorite ? 'fill-red-500' : ''} size={18} />
+        </Button>
       </div>
       <CardContent className="flex-grow pt-4">
         <h3 className="font-medium text-lg mb-2 line-clamp-2">{product.name}</h3>
@@ -89,7 +133,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </CardContent>
       <CardFooter className="pt-0">
-        <Button className="w-full bg-supermarket-green hover:bg-supermarket-lightGreen">
+        <Button 
+          className="w-full bg-supermarket-green hover:bg-supermarket-lightGreen"
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent navigating to detail
+            toast.success('Producto añadido a la lista');
+          }}
+        >
           Añadir a la lista
         </Button>
       </CardFooter>

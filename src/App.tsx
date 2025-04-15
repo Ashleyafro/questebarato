@@ -13,6 +13,7 @@ import UserAccount from "./pages/UserAccount";
 import RecentSearches from "./pages/RecentSearches";
 import Favorites from "./pages/Favorites";
 import FeaturedOffers from "./pages/FeaturedOffers";
+import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="recientes" element={<RecentSearches />} />
             <Route path="favoritos" element={<Favorites />} />
             <Route path="ofertas" element={<FeaturedOffers />} />
+            <Route path="producto/:id" element={<ProductDetail />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

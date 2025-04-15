@@ -1,9 +1,8 @@
-
 import { Product } from '@/types/product';
 import { supabase } from '@/integrations/supabase/client';
 
 // Helper function to format products from Supabase to maintain compatibility with existing UI
-const formatProduct = (product: Product): Product => {
+export const formatProduct = (product: Product): Product => {
   return {
     ...product,
     quantity: getQuantityFromName(product.name),
@@ -36,6 +35,51 @@ const getQuantityFromName = (name: string): string => {
   if (name.includes('Coca Cola')) return '2L';
   
   return '1 ud';
+};
+
+// Function specifically for product search that prioritizes name and brand matches
+export const searchProducts = async (searchTerm: string): Promise<Product[]> => {
+  try {
+    if (!searchTerm || searchTerm.trim() === '') {
+      return [];
+    }
+    
+    // Get products that match the search term in name or brand
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .or(`name.ilike.%${searchTerm}%,brand.ilike.%${searchTerm}%`)
+      .limit(12); // Limit to 12 products for the carousel
+    
+    if (error) {
+      console.error('Error searching products:', error);
+      return [];
+    }
+    
+    if (!data || data.length === 0) {
+      return [];
+    }
+    
+    // Sort results to prioritize exact matches in name or brand
+    const formattedProducts = data.map(formatProduct).sort((a, b) => {
+      const aNameMatch = a.name.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      const bNameMatch = b.name.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      const aBrandMatch = a.brand.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      const bBrandMatch = b.brand.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      
+      // Prioritize name matches over brand matches
+      if (aNameMatch !== bNameMatch) return bNameMatch - aNameMatch;
+      if (aBrandMatch !== bBrandMatch) return bBrandMatch - aBrandMatch;
+      
+      // If both match in the same way, sort by price
+      return a.price - b.price;
+    });
+    
+    return formattedProducts;
+  } catch (error) {
+    console.error('Error in searchProducts:', error);
+    return [];
+  }
 };
 
 export const getProducts = async (

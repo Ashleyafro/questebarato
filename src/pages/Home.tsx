@@ -5,7 +5,8 @@ import SupermarketFilters from '@/components/SupermarketFilters';
 import CategoryFilter from '@/components/CategoryFilter';
 import SortOptions, { SortOption } from '@/components/SortOptions';
 import ProductGrid from '@/components/ProductGrid';
-import { getProducts, getCategories } from '@/services/productService';
+import ProductCarousel from '@/components/ProductCarousel';
+import { getProducts, getCategories, searchProducts } from '@/services/productService';
 import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
 
@@ -19,12 +20,36 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const { toast } = useToast();
 
   // Update search term when URL parameter changes
   useEffect(() => {
     setSearchTerm(initialSearchTerm);
   }, [initialSearchTerm]);
+
+  // Handle search functionality
+  useEffect(() => {
+    const performSearch = async () => {
+      if (searchTerm && searchTerm.trim() !== '') {
+        try {
+          const results = await searchProducts(searchTerm);
+          setSearchResults(results);
+        } catch (error) {
+          console.error('Error searching products:', error);
+          toast({
+            title: "Error",
+            description: "No se pudieron cargar los resultados de búsqueda.",
+            variant: "destructive"
+          });
+        }
+      } else {
+        setSearchResults([]);
+      }
+    };
+    
+    performSearch();
+  }, [searchTerm, toast]);
 
   const loadCategories = async () => {
     try {
@@ -87,6 +112,14 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4">
+      {/* Search Results Carousel */}
+      {searchResults.length > 0 && (
+        <ProductCarousel 
+          products={searchResults} 
+          title={`Resultados para "${searchTerm}"`} 
+        />
+      )}
+      
       <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
         <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>
         
