@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SupermarketFilters from '@/components/SupermarketFilters';
@@ -8,6 +9,7 @@ import ProductCarousel from '@/components/ProductCarousel';
 import { getProducts, getCategories, searchProducts } from '@/services/productService';
 import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
+import Header from '@/components/Header';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -22,10 +24,12 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const { toast } = useToast();
 
+  // Update search term when URL parameter changes
   useEffect(() => {
     setSearchTerm(initialSearchTerm);
   }, [initialSearchTerm]);
 
+  // Handle search functionality
   useEffect(() => {
     const performSearch = async () => {
       if (searchTerm && searchTerm.trim() !== '') {
@@ -112,6 +116,8 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Header onSearch={handleSearch} />
+      
       {/* Search Results Carousel */}
       {searchResults.length > 0 && (
         <ProductCarousel 
