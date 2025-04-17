@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   };
 
   return (
-    <header className="bg-zinc-800 py-3 border-b border-zinc-700">
+    <header className="bg-zinc-800 py-3 border-b border-zinc-700 mb-5">
       <div className="container mx-auto px-4">
         <form onSubmit={handleSearch} className="flex w-full gap-2">
           <div className="relative flex-grow">

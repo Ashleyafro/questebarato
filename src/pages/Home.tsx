@@ -9,6 +9,7 @@ import ProductCarousel from '@/components/ProductCarousel';
 import { getProducts, getCategories, searchProducts } from '@/services/productService';
 import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
+import Header from '@/components/Header';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -33,7 +34,9 @@ const Home = () => {
     const performSearch = async () => {
       if (searchTerm && searchTerm.trim() !== '') {
         try {
+          console.log(`Performing search for term: ${searchTerm}`);
           const results = await searchProducts(searchTerm);
+          console.log(`Search results:`, results);
           setSearchResults(results);
         } catch (error) {
           console.error('Error searching products:', error);
@@ -95,6 +98,7 @@ const Home = () => {
   }, [searchTerm, selectedSupermarkets, sortBy, selectedCategories]);
 
   const handleSearch = (term: string) => {
+    console.log(`Search term updated: ${term}`);
     setSearchTerm(term);
   };
 
@@ -112,6 +116,8 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Header onSearch={handleSearch} />
+      
       {/* Search Results Carousel */}
       {searchResults.length > 0 && (
         <ProductCarousel 
@@ -120,6 +126,7 @@ const Home = () => {
         />
       )}
       
+      {/* Main Products Section */}
       <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
         <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>
         
@@ -148,6 +155,7 @@ const Home = () => {
         <ProductGrid products={products} loading={loading} />
       </div>
 
+      {/* Information Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-[#4A1D96] rounded-lg p-5">
           <h3 className="text-lg font-bold text-white mb-3">TUS SUPERMERCADOS DISPONIBLES EN TU UBICACIÓN</h3>

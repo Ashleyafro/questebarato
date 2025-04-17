@@ -37,18 +37,20 @@ const getQuantityFromName = (name: string): string => {
   return '1 ud';
 };
 
-// Function specifically for product search that prioritizes name and brand matches
+// Function specifically for product search that prioritizes name, brand and category matches
 export const searchProducts = async (searchTerm: string): Promise<Product[]> => {
   try {
     if (!searchTerm || searchTerm.trim() === '') {
       return [];
     }
     
-    // Get products that match the search term in name or brand
+    console.log(`Searching for products with term: ${searchTerm}`);
+    
+    // Get products that match the search term in name, brand, or category
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .or(`name.ilike.%${searchTerm}%,brand.ilike.%${searchTerm}%`)
+      .or(`name.ilike.%${searchTerm}%,brand.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%`)
       .limit(12); // Limit to 12 products for the carousel
     
     if (error) {
@@ -57,21 +59,29 @@ export const searchProducts = async (searchTerm: string): Promise<Product[]> => 
     }
     
     if (!data || data.length === 0) {
+      console.log('No products found for search term:', searchTerm);
       return [];
     }
     
-    // Sort results to prioritize exact matches in name or brand
+    console.log(`Found ${data.length} products for search term: ${searchTerm}`);
+    
+    // Sort results to prioritize exact matches in name, brand, or category
     const formattedProducts = data.map(formatProduct).sort((a, b) => {
-      const aNameMatch = a.name.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
-      const bNameMatch = b.name.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      const aNameMatch = a.name.toLowerCase().includes(searchTerm.toLowerCase()) ? 2 : 0;
+      const bNameMatch = b.name.toLowerCase().includes(searchTerm.toLowerCase()) ? 2 : 0;
       const aBrandMatch = a.brand.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
       const bBrandMatch = b.brand.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      const aCategoryMatch = a.category.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
+      const bCategoryMatch = b.category.toLowerCase().includes(searchTerm.toLowerCase()) ? 1 : 0;
       
-      // Prioritize name matches over brand matches
-      if (aNameMatch !== bNameMatch) return bNameMatch - aNameMatch;
-      if (aBrandMatch !== bBrandMatch) return bBrandMatch - aBrandMatch;
+      // Calculate total match score
+      const aScore = aNameMatch + aBrandMatch + aCategoryMatch;
+      const bScore = bNameMatch + bBrandMatch + bCategoryMatch;
       
-      // If both match in the same way, sort by price
+      // Sort by total score (descending)
+      if (aScore !== bScore) return bScore - aScore;
+      
+      // If scores are equal, sort by price
       return a.price - b.price;
     });
     
