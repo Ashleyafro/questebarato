@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from '@/components/Header';
 import SupermarketFilters from '@/components/SupermarketFilters';
 import CategoryFilter from '@/components/CategoryFilter';
 import SortOptions, { SortOption } from '@/components/SortOptions';
@@ -53,8 +52,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#111]">
-      <Header onSearch={handleSearch} />
-      
       <main className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-3 lg:col-span-2">
