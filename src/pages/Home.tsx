@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SupermarketFilters from '@/components/SupermarketFilters';
 import CategoryFilter from '@/components/CategoryFilter';
 import SortOptions, { SortOption } from '@/components/SortOptions';
@@ -9,6 +10,9 @@ import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
 
 const Home = () => {
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+
   const [selectedSupermarkets, setSelectedSupermarkets] = useState<string[]>(['mercadona', 'dia', 'carrefour']);
   const [sortBy, setSortBy] = useState<SortOption>('price-asc');
   const [products, setProducts] = useState<Product[]>([]);
@@ -38,7 +42,7 @@ const Home = () => {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const data = await getProducts('', selectedSupermarkets, sortBy, selectedCategories);
+      const data = await getProducts(searchQuery, selectedSupermarkets, sortBy, selectedCategories);
       setProducts(data);
     } catch (error) {
       console.error('Error loading products:', error);
@@ -58,7 +62,7 @@ const Home = () => {
 
   useEffect(() => {
     loadProducts();
-  }, [selectedSupermarkets, sortBy, selectedCategories]);
+  }, [searchQuery, selectedSupermarkets, sortBy, selectedCategories]);
 
   const handleFilterChange = (supermarkets: string[]) => {
     setSelectedSupermarkets(supermarkets);
@@ -76,7 +80,9 @@ const Home = () => {
     <div className="container mx-auto p-4">
       {/* Main Products Section */}
       <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
-        <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>
+        <h2 className="text-xl font-bold text-white mb-4">
+          {searchQuery ? `RESULTADOS PARA "${searchQuery}"` : "PRODUCTOS MÁS BARATOS DISPONIBLES"}
+        </h2>
         
         <div className="flex flex-col gap-4 mb-4">
           <SupermarketFilters 
