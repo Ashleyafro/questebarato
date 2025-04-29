@@ -1,58 +1,21 @@
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import SupermarketFilters from '@/components/SupermarketFilters';
 import CategoryFilter from '@/components/CategoryFilter';
 import SortOptions, { SortOption } from '@/components/SortOptions';
 import ProductGrid from '@/components/ProductGrid';
-import ProductCarousel from '@/components/ProductCarousel';
-import { getProducts, getCategories, searchProducts } from '@/services/productService';
+import { getProducts, getCategories } from '@/services/productService';
 import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
-import Header from '@/components/Header';
 
 const Home = () => {
-  const [searchParams] = useSearchParams();
-  const initialSearchTerm = searchParams.get('q') || '';
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [selectedSupermarkets, setSelectedSupermarkets] = useState<string[]>(['mercadona', 'dia', 'carrefour']);
   const [sortBy, setSortBy] = useState<SortOption>('price-asc');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const { toast } = useToast();
-
-  // Update search term when URL parameter changes
-  useEffect(() => {
-    setSearchTerm(initialSearchTerm);
-  }, [initialSearchTerm]);
-
-  // Handle search functionality
-  useEffect(() => {
-    const performSearch = async () => {
-      if (searchTerm && searchTerm.trim() !== '') {
-        try {
-          console.log(`Performing search for term: ${searchTerm}`);
-          const results = await searchProducts(searchTerm);
-          console.log(`Search results:`, results);
-          setSearchResults(results);
-        } catch (error) {
-          console.error('Error searching products:', error);
-          toast({
-            title: "Error",
-            description: "No se pudieron cargar los resultados de búsqueda.",
-            variant: "destructive"
-          });
-        }
-      } else {
-        setSearchResults([]);
-      }
-    };
-    
-    performSearch();
-  }, [searchTerm, toast]);
 
   const loadCategories = async () => {
     try {
@@ -75,7 +38,7 @@ const Home = () => {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const data = await getProducts(searchTerm, selectedSupermarkets, sortBy, selectedCategories);
+      const data = await getProducts('', selectedSupermarkets, sortBy, selectedCategories);
       setProducts(data);
     } catch (error) {
       console.error('Error loading products:', error);
@@ -95,12 +58,7 @@ const Home = () => {
 
   useEffect(() => {
     loadProducts();
-  }, [searchTerm, selectedSupermarkets, sortBy, selectedCategories]);
-
-  const handleSearch = (term: string) => {
-    console.log(`Search term updated: ${term}`);
-    setSearchTerm(term);
-  };
+  }, [selectedSupermarkets, sortBy, selectedCategories]);
 
   const handleFilterChange = (supermarkets: string[]) => {
     setSelectedSupermarkets(supermarkets);
@@ -116,16 +74,6 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Header onSearch={handleSearch} />
-      
-      {/* Search Results Carousel */}
-      {searchResults.length > 0 && (
-        <ProductCarousel 
-          products={searchResults} 
-          title={`Resultados para "${searchTerm}"`} 
-        />
-      )}
-      
       {/* Main Products Section */}
       <div className="bg-[#1E1E1E] rounded-lg p-5 mb-6">
         <h2 className="text-xl font-bold text-white mb-4">PRODUCTOS MÁS BARATOS DISPONIBLES</h2>

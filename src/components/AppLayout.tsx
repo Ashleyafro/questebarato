@@ -11,7 +11,7 @@ const AppLayout = () => {
       <div className="flex min-h-screen w-full">
         <Sidebar />
         <div className="flex flex-col flex-1">
-          <Header onSearch={(term) => console.log('Searching for:', term)} />
+          <Header />
           <main className="flex-grow p-4 bg-zinc-900">
             <Outlet />
           </main>
