@@ -4,14 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
+      // Save search to history
+      try {
+        await supabase
+          .from('search_history')
+          .insert({ search_term: searchTerm.trim() });
+      } catch (error) {
+        console.error('Error saving search history:', error);
+      }
+
       // Navigate to home with search params
       navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`);
     }

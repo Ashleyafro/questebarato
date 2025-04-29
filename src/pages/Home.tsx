@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SupermarketFilters from '@/components/SupermarketFilters';
@@ -8,6 +7,7 @@ import ProductGrid from '@/components/ProductGrid';
 import { getProducts, getCategories } from '@/services/productService';
 import { Product } from '@/types/product';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -20,6 +20,23 @@ const Home = () => {
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const { toast } = useToast();
+
+  // Save search query to history if it exists
+  useEffect(() => {
+    const saveSearchToHistory = async () => {
+      if (searchQuery) {
+        try {
+          await supabase
+            .from('search_history')
+            .insert({ search_term: searchQuery });
+        } catch (error) {
+          console.error('Error saving search history:', error);
+        }
+      }
+    };
+    
+    saveSearchToHistory();
+  }, [searchQuery]);
 
   const loadCategories = async () => {
     try {
