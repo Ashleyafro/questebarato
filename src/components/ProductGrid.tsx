@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Product } from '@/types/product';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import { toast } from 'sonner';
+import { isInShoppingList, addToShoppingList } from '@/utils/shoppingListUtils';
 
 interface ProductGridProps {
   products: Product[];
@@ -14,6 +15,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
   // Add state to track favorites
   const [favorites, setFavorites] = useState<string[]>(
     JSON.parse(localStorage.getItem('favorites') || '[]')
+  );
+  
+  // Add state to track shopping list items
+  const [shoppingListItems, setShoppingListItems] = useState<string[]>(
+    JSON.parse(localStorage.getItem('shoppingList') || '[]').map((item: any) => item.productId)
   );
 
   if (loading) {
@@ -114,6 +120,22 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
     return favorites.includes(productId);
   };
 
+  // Function to add product to shopping list
+  const handleAddToShoppingList = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    
+    // Add to shopping list
+    addToShoppingList(product);
+    
+    // Update local state
+    setShoppingListItems(prev => {
+      if (!prev.includes(product.id)) {
+        return [...prev, product.id];
+      }
+      return prev;
+    });
+  };
+
   return (
     <div className="space-y-6">
       {Object.entries(groupByProductName).map(([productName, products]) => (
@@ -148,7 +170,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
                   
                   {productInSupermarket ? (
                     <div>
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center mb-3">
                         <div>
                           <p className="font-bold text-lg text-supermarket-green">
                             {productInSupermarket.price.toFixed(2)} €
@@ -184,6 +206,17 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
                           </Button>
                         </div>
                       </div>
+                      
+                      {/* Add shopping list button */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-gray-600 text-supermarket-green hover:bg-gray-700 hover:text-supermarket-lightGreen"
+                        onClick={(e) => handleAddToShoppingList(e, productInSupermarket)}
+                      >
+                        <ShoppingCart size={16} className="mr-1" />
+                        Añadir a la lista
+                      </Button>
                     </div>
                   ) : (
                     <div className="flex flex-col h-full justify-center items-center py-4 text-gray-400">
