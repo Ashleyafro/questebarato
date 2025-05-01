@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/carousel';
 import { Product } from '@/types/product';
 import { toast } from 'sonner';
-import { addToShoppingList } from '@/utils/shoppingListUtils';
 
 interface ProductCarouselProps {
   products: Product[];
@@ -48,15 +48,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title }) =>
     
     const forceUpdate = useState({})[1];
     forceUpdate({});
-  };
-  
-  const handleAddToShoppingList = (e: React.MouseEvent, product: Product) => {
-    e.stopPropagation();
-    
-    addToShoppingList(product);
-    
-    // Dispatch event to update the header count
-    window.dispatchEvent(new Event('shoppingListUpdated'));
   };
   
   const getSupermarketColor = (supermarket: string) => {
@@ -138,7 +129,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title }) =>
                   <p className="text-sm text-gray-400 mb-1">{product.brand}</p>
                   <p className="text-sm text-gray-400 mb-3">{product.quantity}</p>
                   
-                  <div className="flex items-baseline justify-between mb-4">
+                  <div className="flex items-baseline justify-between">
                     <div>
                       <p className="text-lg font-bold text-supermarket-green">{product.price.toFixed(2)} €</p>
                       <p className="text-xs text-gray-400">
@@ -152,16 +143,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title }) =>
                       </Badge>
                     )}
                   </div>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-gray-700 text-supermarket-green hover:bg-gray-700"
-                    onClick={(e) => handleAddToShoppingList(e, product)}
-                  >
-                    <ShoppingCart size={16} className="mr-1" />
-                    Añadir a la lista
-                  </Button>
                 </CardContent>
               </Card>
             </CarouselItem>

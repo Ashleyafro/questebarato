@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Heart, ArrowLeft, Star, ShoppingCart } from 'lucide-react';
+import { Heart, ArrowLeft, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -8,7 +9,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { Product } from '@/types/product';
-import { addToShoppingList } from '@/utils/shoppingListUtils';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -142,15 +142,6 @@ const ProductDetail = () => {
     }
   };
 
-  const handleAddToShoppingList = () => {
-    if (product) {
-      addToShoppingList(product);
-      
-      // Dispatch event to update the header count
-      window.dispatchEvent(new Event('shoppingListUpdated'));
-    }
-  };
-
   if (loading) {
     return (
       <div className="container mx-auto p-4">
@@ -250,11 +241,7 @@ const ProductDetail = () => {
             </div>
             
             <div className="flex gap-3">
-              <Button 
-                className="flex-1 bg-supermarket-green hover:bg-supermarket-lightGreen"
-                onClick={handleAddToShoppingList}
-              >
-                <ShoppingCart size={18} className="mr-2" />
+              <Button className="flex-1 bg-supermarket-green hover:bg-supermarket-lightGreen">
                 Añadir a la lista
               </Button>
               <Button 

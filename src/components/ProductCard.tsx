@@ -1,12 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Heart, ShoppingCart } from 'lucide-react';
+import { Star, Heart } from 'lucide-react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from '@/types/product';
 import { toast } from 'sonner';
-import { addToShoppingList } from '@/utils/shoppingListUtils';
 
 interface ProductCardProps {
   product: Product;
@@ -81,16 +81,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  const handleAddToShoppingList = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigating to detail
-    
-    // Add to shopping list
-    addToShoppingList(product);
-    
-    // Dispatch event to update the header count
-    window.dispatchEvent(new Event('shoppingListUpdated'));
-  };
-
   return (
     <Card 
       className="h-full flex flex-col transition-shadow hover:shadow-md cursor-pointer"
@@ -142,20 +132,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
       </CardContent>
-      <CardFooter className="pt-0 flex gap-2">
+      <CardFooter className="pt-0">
         <Button 
-          className="flex-1 bg-supermarket-green hover:bg-supermarket-lightGreen"
-          onClick={handleAddToShoppingList}
+          className="w-full bg-supermarket-green hover:bg-supermarket-lightGreen"
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent navigating to detail
+            toast.success('Producto añadido a la lista');
+          }}
         >
-          <ShoppingCart size={16} className="mr-2" />
           Añadir a la lista
-        </Button>
-        <Button 
-          variant="outline"
-          className={isFavorite ? "text-red-500 border-red-500" : ""}
-          onClick={toggleFavorite}
-        >
-          <Heart className={isFavorite ? "fill-red-500" : ""} size={16} />
         </Button>
       </CardFooter>
     </Card>
