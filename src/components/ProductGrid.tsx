@@ -1,9 +1,8 @@
+
 import React, { useState } from 'react';
 import { Product } from '@/types/product';
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
 import { toast } from 'sonner';
+import ProductGroup from './ProductGroup';
 
 interface ProductGridProps {
   products: Product[];
@@ -52,44 +51,6 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
     });
   });
 
-  const getSupermarketColor = (supermarket: string) => {
-    switch (supermarket.toLowerCase()) {
-      case 'mercadona':
-        return 'bg-supermarket-green';
-      case 'dia':
-        return 'bg-supermarket-red';
-      case 'carrefour':
-        return 'bg-supermarket-blue';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const getCategoryEmoji = (category: string) => {
-    const categoryMap: Record<string, string> = {
-      'lácteos': '🥛',
-      'bebidas': '🥤',
-      'despensa': '🍚',
-      'carnes': '🥩',
-      'pescados': '🐟',
-      'frutas': '🍎',
-      'verduras': '🥦',
-      'congelados': '❄️',
-      'limpieza': '🧼',
-      'higiene': '🧴',
-      'mascotas': '🐾',
-      'panadería': '🍞',
-      'dulces': '🍫',
-      'embutidos': '🥓',
-      'snacks': '🍿',
-      'bebés': '👶',
-      'vinos': '🍷',
-      'cervezas': '🍺'
-    };
-    
-    return categoryMap[category.toLowerCase()] || '🛒';
-  };
-
   // Add function to toggle favorites
   const toggleFavorite = (productId: string) => {
     const currentFavorites = [...favorites];
@@ -117,84 +78,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
   return (
     <div className="space-y-6">
       {Object.entries(groupByProductName).map(([productName, products]) => (
-        <div key={productName} className="bg-black rounded-lg p-4">
-          <div className="flex items-center mb-4">
-            <div className="h-12 w-12 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
-              {getCategoryEmoji(products[0]?.category)}
-            </div>
-            <div className="ml-3">
-              <h2 className="text-white font-bold text-lg">{productName}</h2>
-              <p className="text-sm text-gray-400">{products[0]?.quantity || products[0]?.reference_unit}</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {['Mercadona', 'Dia', 'Carrefour'].map((supermarket) => {
-              const productInSupermarket = products.find(p => p.supermarket === supermarket);
-              
-              return (
-                <div key={supermarket} className={`bg-zinc-800 rounded-lg p-3 text-white ${!productInSupermarket ? 'opacity-50' : ''}`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge className={`${getSupermarketColor(supermarket)} text-white`}>
-                      {supermarket}
-                    </Badge>
-                    
-                    {productInSupermarket?.discount && (
-                      <Badge variant="outline" className="text-supermarket-orange border-supermarket-orange">
-                        -{productInSupermarket.discount}%
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  {productInSupermarket ? (
-                    <div>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-bold text-lg text-supermarket-green">
-                            {productInSupermarket.price.toFixed(2)} €
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            ({productInSupermarket.reference_price.toFixed(2)} €/{productInSupermarket.reference_unit.replace('€/', '')})
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="text-sm text-gray-400 mr-2">
-                            {Array(Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
-                              <span key={i} className="text-yellow-400">★</span>
-                            ))}
-                            {Array(5 - Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
-                              <span key={i}>☆</span>
-                            ))}
-                          </div>
-                          
-                          {/* Add favorite button */}
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className={`h-8 w-8 p-0 ${isFavorite(productInSupermarket.id) ? 'text-red-500' : 'text-gray-400'}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleFavorite(productInSupermarket.id);
-                            }}
-                          >
-                            <Heart 
-                              className={isFavorite(productInSupermarket.id) ? 'fill-red-500' : ''} 
-                              size={16} 
-                            />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col h-full justify-center items-center py-4 text-gray-400">
-                      <span>No disponible</span>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <ProductGroup
+          key={productName}
+          productName={productName}
+          products={products}
+          isFavorite={isFavorite}
+          toggleFavorite={toggleFavorite}
+        />
       ))}
     </div>
   );
