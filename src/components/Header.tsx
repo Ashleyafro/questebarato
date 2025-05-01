@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+import { Search, Heart } from "lucide-react";
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 const Header: React.FC = () => {
@@ -31,7 +31,7 @@ const Header: React.FC = () => {
     <header className="bg-zinc-800 py-3 border-b border-zinc-700 mb-5">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-white font-bold text-xl">QuesteBarato</h1>
+          <Link to="/" className="text-white font-bold text-xl">QuesteBarato</Link>
           <form onSubmit={handleSearch} className="flex-1 max-w-md mx-4">
             <div className="relative">
               <Input
@@ -44,6 +44,10 @@ const Header: React.FC = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 h-4 w-4" />
             </div>
           </form>
+          <Link to="/favoritos" className="flex items-center text-white hover:text-supermarket-green transition-colors">
+            <Heart className="h-5 w-5 mr-1" />
+            <span className="hidden sm:inline">Favoritos</span>
+          </Link>
         </div>
       </div>
     </header>

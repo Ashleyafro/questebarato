@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Product } from '@/types/product';
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
+import { toast } from 'sonner';
 
 interface ProductGridProps {
   products: Product[];
@@ -8,6 +11,11 @@ interface ProductGridProps {
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) => {
+  // Add state to track favorites
+  const [favorites, setFavorites] = useState<string[]>(
+    JSON.parse(localStorage.getItem('favorites') || '[]')
+  );
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -82,6 +90,30 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
     return categoryMap[category.toLowerCase()] || '🛒';
   };
 
+  // Add function to toggle favorites
+  const toggleFavorite = (productId: string) => {
+    const currentFavorites = [...favorites];
+    
+    if (currentFavorites.includes(productId)) {
+      // Remove from favorites
+      const updatedFavorites = currentFavorites.filter(id => id !== productId);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      setFavorites(updatedFavorites);
+      toast.success('Producto eliminado de favoritos');
+    } else {
+      // Add to favorites
+      currentFavorites.push(productId);
+      localStorage.setItem('favorites', JSON.stringify(currentFavorites));
+      setFavorites(currentFavorites);
+      toast.success('Producto añadido a favoritos');
+    }
+  };
+
+  // Function to check if a product is in favorites
+  const isFavorite = (productId: string): boolean => {
+    return favorites.includes(productId);
+  };
+
   return (
     <div className="space-y-6">
       {Object.entries(groupByProductName).map(([productName, products]) => (
@@ -115,23 +147,41 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading = false }) 
                   </div>
                   
                   {productInSupermarket ? (
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-bold text-lg text-supermarket-green">
-                          {productInSupermarket.price.toFixed(2)} €
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          ({productInSupermarket.reference_price.toFixed(2)} €/{productInSupermarket.reference_unit.replace('€/', '')})
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="text-sm text-gray-400">
-                          {Array(Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
-                            <span key={i} className="text-yellow-400">★</span>
-                          ))}
-                          {Array(5 - Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
-                            <span key={i}>☆</span>
-                          ))}
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-bold text-lg text-supermarket-green">
+                            {productInSupermarket.price.toFixed(2)} €
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            ({productInSupermarket.reference_price.toFixed(2)} €/{productInSupermarket.reference_unit.replace('€/', '')})
+                          </p>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="text-sm text-gray-400 mr-2">
+                            {Array(Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
+                              <span key={i} className="text-yellow-400">★</span>
+                            ))}
+                            {Array(5 - Math.floor(productInSupermarket.rating || 0)).fill(0).map((_, i) => (
+                              <span key={i}>☆</span>
+                            ))}
+                          </div>
+                          
+                          {/* Add favorite button */}
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className={`h-8 w-8 p-0 ${isFavorite(productInSupermarket.id) ? 'text-red-500' : 'text-gray-400'}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleFavorite(productInSupermarket.id);
+                            }}
+                          >
+                            <Heart 
+                              className={isFavorite(productInSupermarket.id) ? 'fill-red-500' : ''} 
+                              size={16} 
+                            />
+                          </Button>
                         </div>
                       </div>
                     </div>
