@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Heart } from 'lucide-react';
+import { Star, Heart, ShoppingCart } from 'lucide-react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -81,6 +81,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
+  const addToShoppingList = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigating to detail
+    
+    // Get current shopping list from local storage
+    const shoppingList = JSON.parse(localStorage.getItem('shoppingList') || '[]');
+    
+    // Add product to list if not already there
+    if (!shoppingList.some((item: any) => item.id === product.id)) {
+      const newItem = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity || "1 ud",
+        supermarket: product.supermarket
+      };
+      shoppingList.push(newItem);
+      localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+      toast.success('Producto añadido a la lista de compra');
+    } else {
+      toast.info('Este producto ya está en tu lista de compra');
+    }
+  };
+
   return (
     <Card 
       className="h-full flex flex-col transition-shadow hover:shadow-md cursor-pointer"
@@ -95,14 +118,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           {product.supermarket}
         </Badge>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className={`absolute top-2 left-2 h-8 w-8 p-0 ${isFavorite ? 'text-red-500' : 'text-gray-400'}`}
-          onClick={toggleFavorite}
-        >
-          <Heart className={isFavorite ? 'fill-red-500' : ''} size={18} />
-        </Button>
+        <div className="absolute top-2 left-2 flex gap-1">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={`h-8 w-8 p-0 bg-white/80 hover:bg-white ${isFavorite ? 'text-red-500' : 'text-gray-400'}`}
+            onClick={toggleFavorite}
+          >
+            <Heart className={isFavorite ? 'fill-red-500' : ''} size={18} />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 p-0 bg-white/80 hover:bg-white text-gray-600 hover:text-supermarket-green"
+            onClick={addToShoppingList}
+          >
+            <ShoppingCart size={18} />
+          </Button>
+        </div>
       </div>
       <CardContent className="flex-grow pt-4">
         <h3 className="font-medium text-lg mb-2 line-clamp-2">{product.name}</h3>
@@ -135,10 +168,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <CardFooter className="pt-0">
         <Button 
           className="w-full bg-supermarket-green hover:bg-supermarket-lightGreen"
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent navigating to detail
-            toast.success('Producto añadido a la lista');
-          }}
+          onClick={addToShoppingList}
         >
           Añadir a la lista
         </Button>

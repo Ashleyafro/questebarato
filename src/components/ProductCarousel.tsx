@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -48,6 +48,29 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title }) =>
     
     const forceUpdate = useState({})[1];
     forceUpdate({});
+  };
+  
+  const addToShoppingList = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    
+    // Get current shopping list from local storage
+    const shoppingList = JSON.parse(localStorage.getItem('shoppingList') || '[]');
+    
+    // Add product to list if not already there
+    if (!shoppingList.some((item: any) => item.id === product.id)) {
+      const newItem = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity || "1 ud",
+        supermarket: product.supermarket
+      };
+      shoppingList.push(newItem);
+      localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+      toast.success('Producto añadido a la lista de compra');
+    } else {
+      toast.info('Este producto ya está en tu lista de compra');
+    }
   };
   
   const getSupermarketColor = (supermarket: string) => {
@@ -108,14 +131,24 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, title }) =>
                     <Badge className={getSupermarketColor(product.supermarket)}>
                       {product.supermarket}
                     </Badge>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className={`h-8 w-8 p-0 ${isFavorite(product.id) ? 'text-red-500' : 'text-gray-400'}`}
-                      onClick={(e) => toggleFavorite(e, product.id)}
-                    >
-                      <Heart className={isFavorite(product.id) ? 'fill-red-500' : ''} size={16} />
-                    </Button>
+                    <div className="flex gap-1">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-8 w-8 p-0 text-gray-400 hover:text-supermarket-green"
+                        onClick={(e) => addToShoppingList(e, product)}
+                      >
+                        <ShoppingCart size={16} />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className={`h-8 w-8 p-0 ${isFavorite(product.id) ? 'text-red-500' : 'text-gray-400'}`}
+                        onClick={(e) => toggleFavorite(e, product.id)}
+                      >
+                        <Heart className={isFavorite(product.id) ? 'fill-red-500' : ''} size={16} />
+                      </Button>
+                    </div>
                   </div>
                   
                   <div className="flex items-center justify-center text-5xl mb-4 h-20">

@@ -3,8 +3,9 @@ import React from 'react';
 import { Product } from '@/types/product';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import { getSupermarketColor } from '@/utils/productUtils';
+import { toast } from 'sonner';
 
 interface ProductItemProps {
   supermarket: string;
@@ -19,6 +20,30 @@ const ProductItem: React.FC<ProductItemProps> = ({
   isFavorite,
   toggleFavorite
 }) => {
+  const handleAddToShoppingList = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!product) return;
+    
+    // Get current shopping list from local storage
+    const shoppingList = JSON.parse(localStorage.getItem('shoppingList') || '[]');
+    
+    // Add product to list if not already there
+    if (!shoppingList.some((item: any) => item.id === product.id)) {
+      const newItem = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity || "1 ud",
+        supermarket: product.supermarket
+      };
+      shoppingList.push(newItem);
+      localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+      toast.success('Producto añadido a la lista de compra');
+    } else {
+      toast.info('Este producto ya está en tu lista de compra');
+    }
+  };
+
   return (
     <div className={`bg-zinc-800 rounded-lg p-3 text-white ${!product ? 'opacity-50' : ''}`}>
       <div className="flex items-center justify-between mb-2">
@@ -53,6 +78,15 @@ const ProductItem: React.FC<ProductItemProps> = ({
                   <span key={i}>☆</span>
                 ))}
               </div>
+              
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-8 w-8 p-0 text-gray-400 hover:text-supermarket-green"
+                onClick={handleAddToShoppingList}
+              >
+                <ShoppingCart size={16} />
+              </Button>
               
               <Button 
                 variant="ghost" 
