@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Trash2, Plus, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,8 @@ interface ShoppingListItem {
   supermarket: string;
   checked?: boolean;
 }
+
+type SortOption = 'name' | 'price' | 'supermarket_name'; // Update this with the correct options
 
 const ShoppingList = () => {
   const [shoppingList, setShoppingList] = useState<ShoppingListItem[]>([]);
@@ -92,6 +93,13 @@ const ShoppingList = () => {
   
   const totals = calculateTotals();
   
+  // Fix the sortOptions array to use the correct type
+  const sortOptions = [
+    { value: 'name' as SortOption, label: 'Nombre' },
+    { value: 'price' as SortOption, label: 'Precio' },
+    { value: 'supermarket_name' as SortOption, label: 'Supermercado' }, // Fixed the type error here
+  ];
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -139,7 +147,7 @@ const ShoppingList = () => {
             </Button>
           </div>
         </div>
-        <SortOptions sortBy={sortBy} onSortChange={(option) => setSortBy(option)} />
+        <SortOptions sortBy={sortBy} onSortChange={(option) => setSortBy(option)} options={sortOptions} />
       </div>
       
       {getFilteredAndSortedItems().length > 0 ? (

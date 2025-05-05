@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Bell, ShoppingCart, QrCode, User, Menu, Search, Heart, Star } from 'lucide-react';
+import { Home, Bell, ShoppingCart, QrCode, User, Search, Heart, Star, X } from 'lucide-react';
 import { 
   Sidebar as ShadcnSidebar, 
   SidebarContent, 
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import LoginForm from '@/components/LoginForm';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const Sidebar = () => {
   const isMobile = useIsMobile();
@@ -115,9 +117,16 @@ const Sidebar = () => {
           </Link>
         </SidebarMenuButton>
         <div className="mt-4 flex justify-center">
-          <Button variant="outline" className="w-full bg-purple-700 hover:bg-purple-800 text-white border-none rounded-xl">
-            <span>Iniciar sesión</span>
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full bg-purple-700 hover:bg-purple-800 text-white border-none rounded-xl">
+                <span>Iniciar sesión</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md bg-zinc-900 border-zinc-700">
+              <LoginForm />
+            </DialogContent>
+          </Dialog>
         </div>
       </SidebarFooter>
     </ShadcnSidebar>
