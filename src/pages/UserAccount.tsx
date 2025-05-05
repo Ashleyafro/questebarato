@@ -1,9 +1,27 @@
 
 import React from 'react';
-import { User, Settings, LogOut, CreditCard, History } from 'lucide-react';
+import { User, Settings, LogOut, CreditCard, History, Plus, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { useToast } from '@/hooks/use-toast';
 
 const UserAccount = () => {
+  const { toast } = useToast();
+  const form = useForm({
+    defaultValues: {
+      paymentMethod: 'card'
+    }
+  });
+
+  const handlePaymentMethodChange = () => {
+    toast({
+      title: "Método de pago actualizado",
+      description: "Tu método de pago preferido ha sido actualizado",
+    });
+  };
+
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <div className="bg-zinc-800 rounded-xl p-6">
@@ -35,6 +53,88 @@ const UserAccount = () => {
             Cerrar sesión
           </Button>
         </div>
+      </div>
+      
+      <div className="bg-zinc-800 rounded-xl p-6">
+        <h2 className="text-xl font-bold text-white mb-4">Métodos de pago</h2>
+        
+        <Form {...form}>
+          <form className="space-y-4" onSubmit={form.handleSubmit(handlePaymentMethodChange)}>
+            <FormField
+              control={form.control}
+              name="paymentMethod"
+              render={({ field }) => (
+                <FormItem className="space-y-4">
+                  <RadioGroup 
+                    onValueChange={field.onChange} 
+                    defaultValue={field.value}
+                    className="grid grid-cols-1 gap-4"
+                  >
+                    <FormItem className="flex items-center justify-between space-x-2 space-y-0 bg-zinc-700 p-4 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem value="card" id="card" className="text-[#27AE60]" />
+                        </FormControl>
+                        <div className="flex items-center gap-3">
+                          <div className="bg-white/10 p-2 rounded-md">
+                            <CreditCard size={24} className="text-white" />
+                          </div>
+                          <FormLabel className="font-medium text-white cursor-pointer">Tarjeta bancaria</FormLabel>
+                        </div>
+                      </div>
+                      {field.value === 'card' && <Check className="h-5 w-5 text-[#27AE60]" />}
+                    </FormItem>
+                    
+                    <FormItem className="flex items-center justify-between space-x-2 space-y-0 bg-zinc-700 p-4 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem value="bizum" id="bizum" className="text-[#27AE60]" />
+                        </FormControl>
+                        <div className="flex items-center gap-3">
+                          <div className="bg-blue-500/20 p-2 rounded-md">
+                            <span className="font-bold text-blue-500 text-lg">B</span>
+                          </div>
+                          <FormLabel className="font-medium text-white cursor-pointer">Bizum</FormLabel>
+                        </div>
+                      </div>
+                      {field.value === 'bizum' && <Check className="h-5 w-5 text-[#27AE60]" />}
+                    </FormItem>
+                    
+                    <FormItem className="flex items-center justify-between space-x-2 space-y-0 bg-zinc-700 p-4 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem value="paypal" id="paypal" className="text-[#27AE60]" />
+                        </FormControl>
+                        <div className="flex items-center gap-3">
+                          <div className="bg-blue-600/20 p-2 rounded-md flex items-center justify-center">
+                            <span className="font-bold text-blue-400 text-lg">P</span>
+                          </div>
+                          <FormLabel className="font-medium text-white cursor-pointer">PayPal</FormLabel>
+                        </div>
+                      </div>
+                      {field.value === 'paypal' && <Check className="h-5 w-5 text-[#27AE60]" />}
+                    </FormItem>
+                  </RadioGroup>
+                </FormItem>
+              )}
+            />
+            
+            <Button 
+              type="submit" 
+              className="w-full bg-[#27AE60] hover:bg-[#219653] text-white border-none"
+            >
+              Guardar cambios
+            </Button>
+            
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="w-full border-dashed border-zinc-600 bg-transparent hover:bg-zinc-700 text-gray-300"
+            >
+              <Plus size={16} className="mr-2" /> Añadir nuevo método de pago
+            </Button>
+          </form>
+        </Form>
       </div>
       
       <div className="bg-zinc-800 rounded-xl p-6">
